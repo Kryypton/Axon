@@ -42,12 +42,24 @@ public class Embeds {
         embed.addField("> Spécialisation :", character.getActiveSpec().getName() +" (" + character.getPlayableSpecialization().getRole().getName() + ")", true);
         embed.addField("> Race :", character.getRace().getName(), true);
         embed.addField("> Niveau d'objet :", "" +character.getEquippedItemLevel(), true);
-        embed.addField("> RIO :", "" + character.getMythicKeystoneProfile().getCurrentMythicRating().getRating(), true);
-        embed.addField("> Armurie :", "[Mon Profile](https://worldofwarcraft.blizzard.com/fr-fr/character/eu/hyjal/" + character.getName().toLowerCase() + ")", true);
+        embed.addField("> RIO :", (character.getMythicKeystoneProfile().getCurrentMythicRating() != null) ? character.getMythicKeystoneProfile().getCurrentMythicRating().getRating().toString() : "Pas de cl\u00E9 RIO", true);
+        embed.addField("> Armurie :", "[Mon Profile](https://worldofwarcraft.blizzard.com/fr-fr/character/eu/" + character.getRealm().getSlug().toLowerCase() + "/" + character.getName().toLowerCase() + ")", true);
         embed.addField("<:avertissement:1116643369507115078> - Attention", "> Il est important de noter que les informations présentent sont dynamiquement mise à jour lors de votre dernière déconexion et peuvent donc changer.", false);
         CharacterMedia media = character.getCharacterMedia();
         embed.setImage(media.getMainRawUrl());
         //embed.setThumbnail(media.getAvatarUrl());
+        return embed;
+    }
+
+    public static EmbedBuilder lgeMenuEntretienGetInfosError(ModalInteraction event) {
+        EmbedBuilder embed = Embeds.model();
+        embed.setTitle(event.getMember().getEffectiveName() + ", nous n'avons pas trouver votre personnage.");
+        embed.setDescription("### <:lge_person:1099955042800373772> - Pourquoi ? \n > Afin de faciliter le fonctionnement interne tel que les events et les différentes fonctionnalités, nous devons recueillir vos informations via l'Api de Blizzard.\n ### Est-ce bien vous ?");
+        embed.addField("> Nouveau personnage ? ", event.getValue("player_name").getAsString() + " viens d'être créé ? L'Api de blizzard n'est donc pas encore disponible, il faudra donc patienter.", false);
+        embed.addField("> Vennez-vous de migrer ? ", "Si vous vennez de migrer, c'est sûrement que l'api n'est pas à jour.", false);
+        embed.addField("> Êtes-vous sur Hyjal ? ", "La guilde est sur le royaume d'Hyjal, il est impossible pour nous de guilder des joueurs provenant d'autres royaume", false);
+        embed.addBlankField(false);
+        embed.addField("> Solutions : ", "Vous pouvez contacter un Officier pour effectuer votre présentation de guilde autrement, ou accéder au discord en tant qu'invité.", false);
         return embed;
     }
 
@@ -60,11 +72,10 @@ public class Embeds {
         embed.addField("> Race :", character.getRace().getName(), true);
         embed.addField("> Niveau d'objet :", "" + character.getEquippedItemLevel(), true);
         embed.addField("> RIO :", "" + character.getMythicKeystoneProfile().getCurrentMythicRating().getRating(), true);
-        embed.addField("> Armurie :", "[Mon Profile](https://worldofwarcraft.blizzard.com/fr-fr/character/eu/hyjal/" + character.getName().toLowerCase() + ")", true);
+        embed.addField("> Armurie :", "[Mon Profile](https://worldofwarcraft.blizzard.com/fr-fr/character/eu/" + character.getRealm().getSlug().toLowerCase() + "/" + character.getName().toLowerCase() + ")", true);
         embed.addField("<:avertissement:1116643369507115078> - Attention", "> Il est important de noter que les informations présentent sont dynamiquement mise à jour lors de votre dernière déconexion et peuvent donc changer.", false);
         CharacterMedia media = character.getCharacterMedia();
         embed.setImage(media.getMainRawUrl());
-        //embed.setThumbnail(media.getAvatarUrl());
         return embed;
     }
 }

@@ -23,4 +23,12 @@ public class ItemComponents {
         actionRow.add(new ButtonImpl("lge_menu_quit", "Quitter", ButtonStyle.DANGER, false, null));
         return actionRow;
     }
+
+    public static Collection<? extends ItemComponent> lgeMenuError() {
+        Collection<ItemComponent> actionRow = ItemComponents.model();
+        actionRow.add(new ButtonImpl("lge_menu_entretien", "Réessayer", ButtonStyle.SUCCESS, false, null));
+        actionRow.add(new ButtonImpl("lge_menu_invite", "Invité", ButtonStyle.SECONDARY, false, null));
+        actionRow.add(new ButtonImpl("lge_menu_quit", "Quitter", ButtonStyle.DANGER, false, null));
+        return actionRow;
+    }
 }

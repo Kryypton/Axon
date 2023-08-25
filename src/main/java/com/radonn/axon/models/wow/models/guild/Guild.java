@@ -2,6 +2,7 @@ package com.radonn.axon.models.wow.models.guild;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.radonn.axon.controllers.wow.BlizzardApiController;
+import com.radonn.axon.exceptions.GuildRosterNotFoundException;
 import com.radonn.axon.models.wow.models.base.Descriptor;
 import com.radonn.axon.models.wow.models.base.Link;
 import com.radonn.axon.models.wow.models.base.Links;
@@ -78,6 +79,11 @@ public class Guild {
     //// 
 
     public GuildRoster getGuildRoster() {
-        return new BlizzardApiController().getGuildRoster(this.realm.getName().toLowerCase().replace(" ", "-"), this.name.toLowerCase().replace(" ", "-"));
+        try {
+			return new BlizzardApiController().getGuildRoster(this.realm.getName().toLowerCase().replace(" ", "-"), this.name.toLowerCase().replace(" ", "-"));
+		} catch (GuildRosterNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
     }
 }

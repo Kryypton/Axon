@@ -12,7 +12,8 @@ import java.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.radonn.axon.config.Consts;
+import com.radonn.axon.configs.Consts;
+import com.radonn.axon.exceptions.BattleNetOAuthClientNullException;
 
 @Component
 public class BattleNetOAuthClient {

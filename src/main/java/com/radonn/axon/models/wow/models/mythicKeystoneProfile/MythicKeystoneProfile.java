@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.radonn.axon.controllers.wow.BlizzardApiController;
+import com.radonn.axon.exceptions.MythicKeystoneProfileSeasonNotFoundException;
 import com.radonn.axon.models.wow.models.Character;
 import com.radonn.axon.models.wow.models.base.Item;
 import com.radonn.axon.models.wow.models.base.Links;
@@ -51,6 +52,11 @@ public class MythicKeystoneProfile {
                 seasonIdIndex = season.getId();
             }
         }
-        return new BlizzardApiController().getMythicKeystoneProfileSeason(this.character.getRealm().getSlug().toLowerCase(), this.character.getName().toLowerCase(), seasonIdIndex);
+        try {
+            return new BlizzardApiController().getMythicKeystoneProfileSeason(this.character.getRealm().getSlug().toLowerCase(), this.character.getName().toLowerCase(), seasonIdIndex);
+        } catch (MythicKeystoneProfileSeasonNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

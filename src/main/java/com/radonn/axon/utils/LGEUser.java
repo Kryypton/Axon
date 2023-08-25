@@ -3,6 +3,7 @@ package com.radonn.axon.utils;
 import java.util.ArrayList;
 
 import com.radonn.axon.controllers.wow.BlizzardApiController;
+import com.radonn.axon.exceptions.CharacterNotFoundException;
 import com.radonn.axon.models.wow.models.Character;
 
 public class LGEUser {
@@ -45,11 +46,11 @@ public class LGEUser {
         return discordId;
     }
 
-    public Character getBuildedMain() {
+    public Character getBuildedMain() throws CharacterNotFoundException {
         return blizzardApiController.getCharacter(GUILD_REALM, mainCharacterName);
     }
 
-    public ArrayList<Character> getBuildedAlts() {
+    public ArrayList<Character> getBuildedAlts() throws CharacterNotFoundException {
         ArrayList<Character> alts = new ArrayList<Character>();
         for (String altName : altCharacterNames) {
             alts.add(blizzardApiController.getCharacter(GUILD_REALM, altName));

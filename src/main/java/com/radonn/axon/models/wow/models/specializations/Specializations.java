@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.radonn.axon.controllers.wow.BlizzardApiController;
+import com.radonn.axon.exceptions.PlayableSpecializationNotFoundException;
 import com.radonn.axon.models.wow.models.base.Descriptor;
 import com.radonn.axon.models.wow.models.base.Links;
 import com.radonn.axon.models.wow.models.base.Playable;
@@ -34,6 +35,11 @@ public class Specializations {
 	}
 
     public Descriptor getRole() {
-        return new BlizzardApiController().getPlayableSpecialisation(this.getActiveSpecialization().getId()).getRole();
+        try {
+			return new BlizzardApiController().getPlayableSpecialisation(this.getActiveSpecialization().getId()).getRole();
+		} catch (PlayableSpecializationNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
     }
 }

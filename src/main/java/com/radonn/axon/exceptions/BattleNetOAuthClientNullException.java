@@ -1,4 +1,4 @@
-package com.radonn.axon.services.battleNetOAuth;
+package com.radonn.axon.exceptions;
 
 public class BattleNetOAuthClientNullException extends RuntimeException {
     public BattleNetOAuthClientNullException(String errorType) {

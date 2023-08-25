@@ -1,6 +1,11 @@
 package com.radonn.axon.models.wow.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.radonn.axon.controllers.wow.BlizzardApiController;
+import com.radonn.axon.exceptions.AchievementsNotFoundException;
+import com.radonn.axon.exceptions.CharacterMediaNotFoundException;
+import com.radonn.axon.exceptions.EquipmentNotFoundException;
+import com.radonn.axon.exceptions.MythicKeystoneProfileNotFoundException;
+import com.radonn.axon.exceptions.PlayableSpecializationNotFoundException;
 import com.radonn.axon.models.wow.models.achievements.Achievements;
 import com.radonn.axon.models.wow.models.base.*;
 import com.radonn.axon.models.wow.models.characterMedia.CharacterMedia;
@@ -117,22 +122,47 @@ public class Character {
 	////
 
 	public Equipment getEquipment() {
-		return new BlizzardApiController().getEquipment(realm.getName().toLowerCase(), name.toLowerCase());
+		try {
+			return new BlizzardApiController().getEquipment(realm.getName().toLowerCase(), name.toLowerCase());
+		} catch (EquipmentNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public Achievements getAchievements() {
-		return new BlizzardApiController().getAchievements(realm.getName().toLowerCase(), name.toLowerCase());
+		try {
+			return new BlizzardApiController().getAchievements(realm.getName().toLowerCase(), name.toLowerCase());
+		} catch (AchievementsNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public PlayableSpecialization getPlayableSpecialization() {
-		return new BlizzardApiController().getPlayableSpecialisation(activeSpec.getId());
+		try {
+			return new BlizzardApiController().getPlayableSpecialisation(activeSpec.getId());
+		} catch (PlayableSpecializationNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public CharacterMedia getCharacterMedia() {
-		return new BlizzardApiController().getCharacterMedia(realm.getName().toLowerCase(), name.toLowerCase());
+		try {
+			return new BlizzardApiController().getCharacterMedia(realm.getName().toLowerCase(), name.toLowerCase());
+		} catch (CharacterMediaNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public MythicKeystoneProfile getMythicKeystoneProfile() {
-		return new BlizzardApiController().getMythicKeystoneProfile(realm.getName().toLowerCase(), name.toLowerCase());
+		try {
+			return new BlizzardApiController().getMythicKeystoneProfile(realm.getName().toLowerCase(), name.toLowerCase());
+		} catch (MythicKeystoneProfileNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

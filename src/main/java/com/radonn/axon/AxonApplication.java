@@ -6,6 +6,7 @@ import org.springframework.context.ApplicationContext;
 
 import com.radonn.axon.controllers.wow.BlizzardApiController;
 import com.radonn.axon.discord.DiscordBotManager;
+import com.radonn.axon.exceptions.GuildNotFoundException;
 import com.radonn.axon.models.wow.models.guild.Guild;
 
 @SpringBootApplication
@@ -18,7 +19,12 @@ public class AxonApplication {
         ApplicationContext context = SpringApplication.run(AxonApplication.class, args);
         
         AxonApplication.BnetCtrl = context.getBean(BlizzardApiController.class);
-        AxonApplication.GuildCtrl = BnetCtrl.getGuild("hyjal", "gardiens-éternels");
+        
+        try {
+            AxonApplication.GuildCtrl = BnetCtrl.getGuild("hyjal", "gardiens-éternels");
+        } catch (GuildNotFoundException e) {
+            e.printStackTrace();
+        }
             
         context.getBean(DiscordBotManager.class).init();
         System.out.println("Bot started !");

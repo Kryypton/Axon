@@ -28,8 +28,8 @@ public class Modals {
     }
 
     public static Modal modInvite(User user) {
-        TextInput nameInput = new TextInputImpl("player_name_invite", TextInputStyle.SHORT ,"Quel est votre Pseudo en jeu ?", 3, 30, true, null, "Caractères spéciaux incluts \"éçâß\" (sensible à la case)");
-        TextInput realmInput = new TextInputImpl("realm_name_invite", TextInputStyle.SHORT ,"Quel est votre Royaume en jeu ?", 3, 30, true, "Hyjal", "Caractères spéciaux incluts \"éçâß\" (sensible à la case)");
+        TextInput nameInput = new TextInputImpl("player_name", TextInputStyle.SHORT ,"Quel est votre Pseudo en jeu ?", 3, 30, true, null, "Caractères spéciaux incluts \"éçâß\" (sensible à la case)");
+        TextInput realmInput = new TextInputImpl("realm_name", TextInputStyle.SHORT ,"Quel est votre Royaume en jeu ?", 3, 30, true, "Hyjal", "Caractères spéciaux incluts \"éçâß\" (sensible à la case)");
         ArrayList<LayoutComponent> textInputComponent = model();
         textInputComponent.add(ActionRow.of(nameInput));
         textInputComponent.add(ActionRow.of(realmInput));

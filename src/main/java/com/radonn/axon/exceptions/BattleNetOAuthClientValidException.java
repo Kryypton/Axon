@@ -1,4 +1,4 @@
-package com.radonn.axon.services.battleNetOAuth;
+package com.radonn.axon.exceptions;
 
 public class BattleNetOAuthClientValidException extends Exception {
     public BattleNetOAuthClientValidException(String errorType, String errorDescription) {
