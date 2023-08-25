@@ -4,9 +4,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.radonn.axon.discord.controllers.ButtonCommand;
-import com.radonn.axon.discord.controllers.ModalCommand;
-import com.radonn.axon.discord.controllers.SlashCommand;
+import com.radonn.axon.controllers.discord.ButtonCommand;
+import com.radonn.axon.controllers.discord.ModalCommand;
+import com.radonn.axon.controllers.discord.SlashCommand;
 
 import org.slf4j.Logger;
 

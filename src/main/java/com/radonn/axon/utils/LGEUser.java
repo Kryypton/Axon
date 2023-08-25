@@ -2,8 +2,8 @@ package com.radonn.axon.utils;
 
 import java.util.ArrayList;
 
-import com.radonn.axon.wowApi.controllers.BlizzardApiController;
-import com.radonn.axon.wowApi.models.Character;
+import com.radonn.axon.controllers.wow.BlizzardApiController;
+import com.radonn.axon.models.wow.models.Character;
 
 public class LGEUser {
 
