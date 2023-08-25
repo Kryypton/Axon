@@ -22,6 +22,14 @@ public class Embeds {
         return Embeds.emb;
     }
 
+    public static EmbedBuilder loading() {
+        EmbedBuilder embed = Embeds.model();
+        embed.setTitle("Chargement en cours...");
+        embed.setDescription("Veuillez patienter pendant que nous récupérons les informations.");
+        embed.setThumbnail("attachment://loading.gif");
+        return embed;
+    }
+
     public static EmbedBuilder lgeMenu(String imageName, String thumbnailName) {
         EmbedBuilder embed = Embeds.model();
         embed.setTitle("<:lge_enter:1099955038408945694>\u0020\u0020- __Bienvenue chez les Gardiens Éternels !__");
@@ -54,7 +62,7 @@ public class Embeds {
     public static EmbedBuilder lgeMenuEntretienGetInfosError(ModalInteraction event) {
         EmbedBuilder embed = Embeds.model();
         embed.setTitle(event.getMember().getEffectiveName() + ", nous n'avons pas trouver votre personnage.");
-        embed.setDescription("### <:lge_person:1099955042800373772> - Pourquoi ? \n > Afin de faciliter le fonctionnement interne tel que les events et les différentes fonctionnalités, nous devons recueillir vos informations via l'Api de Blizzard.\n ### Est-ce bien vous ?");
+        embed.setDescription("### <:lge_person:1099955042800373772> - Pourquoi ? \n > Afin de faciliter le fonctionnement interne tel que les events et les différentes fonctionnalités, nous devons recueillir vos informations via l'Api de Blizzard.");
         embed.addField("> Nouveau personnage ? ", event.getValue("player_name").getAsString() + " viens d'être créé ? L'Api de blizzard n'est donc pas encore disponible, il faudra donc patienter.", false);
         embed.addField("> Vennez-vous de migrer ? ", "Si vous vennez de migrer, c'est sûrement que l'api n'est pas à jour.", false);
         embed.addField("> Êtes-vous sur Hyjal ? ", "La guilde est sur le royaume d'Hyjal, il est impossible pour nous de guilder des joueurs provenant d'autres royaume", false);
@@ -78,4 +86,18 @@ public class Embeds {
         embed.setImage(media.getMainRawUrl());
         return embed;
     }
+
+    public static EmbedBuilder lgeMenuInviteGetInfosError(ModalInteraction event) {
+        EmbedBuilder embed = Embeds.model();
+        embed.setTitle(event.getMember().getEffectiveName() + ", nous n'avons pas trouver votre personnage.");
+        embed.setDescription("### <:lge_person:1099955042800373772> - Pourquoi ? \n > Afin de faciliter le fonctionnement interne tel que les events et les différentes fonctionnalités, nous devons recueillir vos informations via l'Api de Blizzard.");
+        embed.addField("> Nouveau personnage ? ", event.getValue("player_name").getAsString() +  "-" + event.getValue("realm_name") + " viens d'être créé ? L'Api de blizzard n'est donc pas encore disponible, il faudra donc patienter.", false);
+        embed.addField("> Vennez-vous de migrer ? ", "Si vous vennez de migrer, c'est sûrement que l'api n'est pas à jour.", false);
+        embed.addBlankField(false);
+        embed.addField("> Solutions : ", "Vous pouvez contacter un Officier pour qu'il vous attribue manuellement le status d'invité pour accéder au discord.", false);
+        return embed;
+    }
+
+
+
 }

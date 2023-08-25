@@ -8,12 +8,16 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 public class SlashCommand {
 
     public static void lgeMenu(SlashCommandInteractionEvent event) {
+
+        FileUploadBuilderByPath loding = new FileUploadBuilderByPath("loading.gif", "src/main/resources/images/guild/animation/loading.gif");
+
+        event.deferReply().setEphemeral(true).setEmbeds(Embeds.loading().build()).setFiles(loding.getFileUpload()).queue();
+
         event.getJDA().getGatewayPool().submit((Runnable) () -> {
 
             FileUploadBuilderByPath image = new FileUploadBuilderByPath("image.gif", "src/main/resources/images/guild/animation/opener.gif");
             FileUploadBuilderByPath thumbnail = new FileUploadBuilderByPath("thumbnail.png", "src/main/resources/images/guild/logo/logo.png");
             
-            event.deferReply(false).queue();
             event.getHook()
                 .editOriginalEmbeds(Embeds.lgeMenu(image.getOutPutName(), thumbnail.getOutPutName()).build())
                 .setActionRow(ItemComponents.lgeMenu())

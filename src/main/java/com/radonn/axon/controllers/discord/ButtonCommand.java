@@ -8,16 +8,23 @@ public class ButtonCommand {
 
     public static void lgeMenu(ButtonInteractionEvent event) {
         try {
-        if (event.getComponentId().equals("lge_menu_entretien")) event.getJDA().getGatewayPool().submit((Runnable) () -> {
-            event.replyModal(Modals.modEntretien(event.getUser())).queue();
-        });
-        if (event.getComponentId().equals("lge_menu_invite")) event.getJDA().getGatewayPool().submit((Runnable) () -> {
-            event.replyModal(Modals.modInvite(event.getUser())).queue();
-        });
+            switch (event.getComponentId()) {
+                case "lge_menu_entretien":
+                    event.getJDA().getGatewayPool().submit((Runnable) () -> {
+                        event.replyModal(Modals.modEntretien(event.getUser())).queue();
+                    });
+                    break;
+                case "lge_menu_invite":
+                        event.getJDA().getGatewayPool().submit((Runnable) () -> {
+                            event.replyModal(Modals.modInvite(event.getUser())).queue();
+                        });
+                    break;
+                default:
+                    break;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
     
 }
