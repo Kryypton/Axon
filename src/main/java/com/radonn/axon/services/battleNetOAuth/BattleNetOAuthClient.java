@@ -9,7 +9,6 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.radonn.axon.configs.Consts;
@@ -25,7 +24,6 @@ public class BattleNetOAuthClient {
     private static Consts consts;
     private static BattleNetOAuthClient instance;
 
-    @Autowired
     public BattleNetOAuthClient(Consts consts) {
         BattleNetOAuthClient.consts = consts;
         this.tokenEndpoint = "https://oauth.battle.net/token";

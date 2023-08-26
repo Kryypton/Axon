@@ -4,7 +4,7 @@ import net.dv8tion.jda.api.interactions.modals.ModalInteraction;
 
 import com.radonn.axon.AxonApplication;
 import com.radonn.axon.exceptions.CharacterNotFoundException;
-import com.radonn.axon.models.wow.models.Character;
+import com.radonn.axon.models.wow.Character;
 import com.radonn.axon.utils.FileUploadBuilderByPath;
 import com.radonn.axon.views.discord.builder.*;
 

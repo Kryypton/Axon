@@ -4,8 +4,8 @@ import java.awt.Color;
 
 import java.time.Instant;
 
-import com.radonn.axon.models.wow.models.characterMedia.CharacterMedia;
-import com.radonn.axon.models.wow.models.Character;
+import com.radonn.axon.models.wow.Character;
+import com.radonn.axon.models.wow.characterMedia.CharacterMedia;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.interactions.modals.ModalInteraction;

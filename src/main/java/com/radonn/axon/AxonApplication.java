@@ -5,9 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
 import com.radonn.axon.controllers.wow.BlizzardApiController;
-import com.radonn.axon.discord.DiscordBotManager;
 import com.radonn.axon.exceptions.GuildNotFoundException;
-import com.radonn.axon.models.wow.models.guild.Guild;
+import com.radonn.axon.models.wow.guild.Guild;
+import com.radonn.axon.services.discord.DiscordBotManager;
 
 @SpringBootApplication
 public class AxonApplication {

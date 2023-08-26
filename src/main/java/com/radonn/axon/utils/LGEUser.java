@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.radonn.axon.controllers.wow.BlizzardApiController;
 import com.radonn.axon.exceptions.CharacterNotFoundException;
-import com.radonn.axon.models.wow.models.Character;
+import com.radonn.axon.models.wow.Character;
 
 public class LGEUser {
 
