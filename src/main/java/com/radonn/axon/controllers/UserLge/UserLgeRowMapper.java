@@ -14,7 +14,8 @@ public class UserLgeRowMapper implements RowMapper<users> {
         userLge.setDiscordID(rs.getLong("discord_id"));
         userLge.setPseudo(rs.getString("pseudo"));
         userLge.setCommingDate(rs.getTimestamp("comming_date"));
-        // Mapping d'autres propriétés si nécessaire
+        userLge.setLastLoginDate(rs.getTimestamp("last_login_date"));
+        userLge.setTimeSpend(rs.getLong("time_spend"));
         return userLge;
     }
 }

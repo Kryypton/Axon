@@ -1,13 +1,8 @@
 package com.radonn.axon;
 
-import java.util.ArrayList;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import com.radonn.axon.controllers.UserLge.UserLgeController;
 import com.radonn.axon.controllers.wow.BlizzardApiController;
@@ -61,10 +56,18 @@ public class AxonApplication {
             users retrievedUser = userLgeController.getUserById(360825447786872843L);
             System.out.println("Utilisateur récupéré : " + retrievedUser);
 
+            userLgeController.detectConnexionUser(360825447786872843L);
+            // PROGRAMME en pause durant 10 secondes;
+            Thread.sleep(10000);
+            userLgeController.detectDeconnexionUser(360825447786872843L);
+
             // Récupérer les informations d'un personnage WoW
             Character character = blizzardApiController.getCharacter("hyjal", "xénonn");
             System.out.println("Informations du personnage : " + character);
         } catch (CharacterNotFoundException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("Erreur inconnue");
             e.printStackTrace();
         }
     }

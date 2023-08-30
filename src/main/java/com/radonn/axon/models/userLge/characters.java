@@ -4,8 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.hibernate.type.descriptor.jdbc.SmallIntJdbcType;
-
 @Entity
 @Table(name = "characters")
 public class characters {
@@ -15,7 +13,7 @@ public class characters {
     private Long discordID;
     private String name;
     private Boolean isMain;
-    private SmallIntJdbcType role;
+    private int role;
     
     public Long getCharacterID() {
         return characterID;
@@ -33,7 +31,7 @@ public class characters {
         return isMain;
     }
 
-    public SmallIntJdbcType getRole() {
+    public int getRole() {
         return role;
     }
 
@@ -53,7 +51,11 @@ public class characters {
         this.isMain = isMain;
     }
 
-    public void setRole(SmallIntJdbcType role) {
+    public void setRole(int role) {
         this.role = role;
+    }
+
+    public RoleLge getRoleLge() {
+        return RoleLge.getRoleByDiscriminant(this.getRole());
     }
 }

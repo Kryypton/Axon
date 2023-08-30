@@ -16,24 +16,24 @@ public enum RoleLge {
     private String district;
     private long roleId;
     private long districtId;
-    private int order;
+    private int discriminant;
 
-    private RoleLge(String roleName, String district, long roleId, long districtId, int order) {
+    private RoleLge(String roleName, String district, long roleId, long districtId, int discriminant) {
         this.roleName = roleName;
         this.district = district;
-        this.order = order;
+        this.discriminant = discriminant;
     }
 
     private RoleLge(String roleName, String district, long roleId, long districtId) {
         this.roleName = roleName;
         this.district = district;
-        this.order = -1;
+        this.discriminant = -1;
     }
 
-    private RoleLge(String roleName, String district, int order) {
+    private RoleLge(String roleName, String district, int discriminant) {
         this.roleName = roleName;
         this.district = district;
-        this.order = order;
+        this.discriminant = discriminant;
     }
 
     public String getRoleName() {
@@ -52,7 +52,17 @@ public enum RoleLge {
         return districtId;
     }
 
-    public int getOrder() {
-        return order;
+    public int getDiscriminant() {
+        return discriminant;
     }
+
+    public static RoleLge getRoleByDiscriminant(int discriminant) {
+        for (RoleLge role : RoleLge.values()) {
+            if (role.getDiscriminant() == discriminant) {
+                return role;
+            }
+        }
+        return null;
+    }
+    
 }
