@@ -29,11 +29,11 @@ public class DiscordBotManager extends ListenerAdapter {
     @Value("${discord.api.bot-token}")
     private String discordBotToken;
 
-    public static JDA jda;
+    public JDA jda;
 
     public void init() {
         try {
-            jda = JDABuilder.createDefault(discordBotToken)
+            this.jda = JDABuilder.createDefault(discordBotToken)
                     .enableIntents(GatewayIntent.MESSAGE_CONTENT, GatewayIntent.GUILD_MEMBERS,
                             GatewayIntent.DIRECT_MESSAGES, GatewayIntent.GUILD_PRESENCES,
                             GatewayIntent.GUILD_VOICE_STATES)
@@ -55,6 +55,10 @@ public class DiscordBotManager extends ListenerAdapter {
             e.printStackTrace();
             logger.error("Erreur lors de l'initialisation du bot Discord.", e);
         }
+    }
+
+    public JDA getJda() {
+        return this.jda;
     }
 
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
