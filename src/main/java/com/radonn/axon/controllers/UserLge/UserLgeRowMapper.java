@@ -13,7 +13,7 @@ public class UserLgeRowMapper implements RowMapper<users> {
         users userLge = new users();
         userLge.setDiscordID(rs.getLong("discord_id"));
         userLge.setPseudo(rs.getString("pseudo"));
-        userLge.setCommingDate(rs.getDate("comming_date"));
+        userLge.setCommingDate(rs.getTimestamp("comming_date"));
         // Mapping d'autres propriétés si nécessaire
         return userLge;
     }

@@ -50,7 +50,6 @@ public class AxonApplication {
         // Récupérer le contrôleur BlizzardApiController
         BlizzardApiController blizzardApiController = context.getBean(BlizzardApiController.class);
 
-
         try {
             // Ajouter un utilisateur avec ID Discord et mainName
             users addedUser = userLgeController.addUser(discordApp.getJda().retrieveUserById(360825447786872843L).complete());

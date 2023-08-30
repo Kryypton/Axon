@@ -1,6 +1,7 @@
 package com.radonn.axon.models.userLge;
 
-import java.sql.Date;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -13,7 +14,7 @@ public class users {
     @Id
     private Long discordID;
     private String pseudo;
-    private Date commingDate = new Date(System.currentTimeMillis());
+    private Timestamp commingDate = Timestamp.valueOf(LocalDateTime.now());
     
     public Long getDiscordID() {
         return discordID;
@@ -23,7 +24,7 @@ public class users {
         return pseudo;
     }
 
-    public Date getCommingDate() {
+    public Timestamp getCommingDate() {
         return commingDate;
     }
 
@@ -35,7 +36,7 @@ public class users {
         this.discordID = discordID;
     }
 
-    public void setCommingDate(Date commingDate) {
+    public void setCommingDate(Timestamp commingDate) {
         this.commingDate = commingDate;
     }
 }

@@ -24,7 +24,6 @@ public class UserLgeController {
 
     @GetMapping("/users/all")
     public users getUserById(@RequestParam Long id) {
-        // Utilisation de JdbcTemplate pour exécuter une requête SQL
         String sql = "SELECT * FROM users WHERE discord_id = ?";
         users userLge = jdbcTemplate.queryForObject(sql, new UserLgeRowMapper(), id);
         return userLge;
@@ -38,7 +37,6 @@ public class UserLgeController {
             userLge.setDiscordID(user.getIdLong());
             userLge.setPseudo(user.getName());
             
-            // Utilisation de JdbcTemplate pour insérer des données
             String sql = "INSERT INTO users (discord_id, pseudo, comming_date) VALUES (?, ?, ?)";
             jdbcTemplate.update(sql, userLge.getDiscordID(), userLge.getPseudo(), userLge.getCommingDate());
             
@@ -54,4 +52,6 @@ public class UserLgeController {
         String sql = "DELETE FROM users WHERE discord_id = ?";
         jdbcTemplate.update(sql, id);
     }
+
+
 }
