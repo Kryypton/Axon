@@ -148,21 +148,12 @@ public class Character {
 		return null;
 	}
 
-	public CharacterMedia getCharacterMedia() {
-		try {
-			return new BlizzardApiController().getCharacterMedia(realm.getName().toLowerCase(), name.toLowerCase());
-		} catch (CharacterMediaNotFoundException e) {
-			e.printStackTrace();
-		}
-		return null;
+	public CharacterMedia getCharacterMedia() throws CharacterMediaNotFoundException {
+		return new BlizzardApiController().getCharacterMedia(realm.getName().toLowerCase(), name.toLowerCase());
 	}
 
-	public MythicKeystoneProfile getMythicKeystoneProfile() {
-		try {
-			return new BlizzardApiController().getMythicKeystoneProfile(realm.getName().toLowerCase(), name.toLowerCase());
-		} catch (MythicKeystoneProfileNotFoundException e) {
-			e.printStackTrace();
-		}
-		return null;
+	public MythicKeystoneProfile getMythicKeystoneProfile() throws MythicKeystoneProfileNotFoundException{
+		return new BlizzardApiController().getMythicKeystoneProfile(realm.getName().toLowerCase(), name.toLowerCase());
 	}
+
 }

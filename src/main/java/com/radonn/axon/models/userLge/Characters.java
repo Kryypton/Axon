@@ -1,18 +1,24 @@
 package com.radonn.axon.models.userLge;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "characters")
-public class characters {
+public class Characters {
 
     @Id
+    @Column(name = "character_id")
     private Long characterID;
+    @Column(name = "discord_id")
     private Long discordID;
+    @Column(name = "name")
     private String name;
+    @Column(name = "is_main")
     private Boolean isMain;
+    @Column(name = "role")
     private int role;
     
     public Long getCharacterID() {

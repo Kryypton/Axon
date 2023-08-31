@@ -36,4 +36,12 @@ public class Modals {
         Modal modal = new ModalImpl("lge_menu_invite",user.getName() + " | Bienvenue !",  textInputComponent);
         return modal;
     }
+
+    public static Modal modEntretienRetry(User user) {
+        TextInput nameInput = new TextInputImpl("player_name", TextInputStyle.SHORT ,"Quel est votre Pseudo en jeu ?", 3, 30, true, null, "Caractères spéciaux incluts \"éçâß\" (sensible à la case)");
+        ArrayList<LayoutComponent> textInputComponent = model();
+        textInputComponent.add(ActionRow.of(nameInput));
+        Modal modal = new ModalImpl("lge_menu_entretien_retry",user.getName() + " | Bienvenue !",  textInputComponent);
+        return modal;
+    }
 }

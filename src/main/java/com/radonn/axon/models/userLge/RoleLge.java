@@ -9,6 +9,7 @@ public enum RoleLge {
     EventLeader("Organisateur d'évents", "Bloc Secondaire", 1026101174157455382L, 880141570861576202L, 2), 
     MEMBER("Membre", "Bloc Principale", 880141574414155846L, 880141571041951756L, 3), 
     NOUVEAU("Nouveau", "Bloc Principale", 880141573776621625L, 880141571041951756L, 4), 
+    REROLL("Reroll", "Bloc Principale", 5),
     GUEST("Invité", "Bloc Invité", 880141574984568904L, 975029684637163561L), 
     NA("Non assigné", "Bloc N/A", 6);
 
@@ -59,6 +60,15 @@ public enum RoleLge {
     public static RoleLge getRoleByDiscriminant(int discriminant) {
         for (RoleLge role : RoleLge.values()) {
             if (role.getDiscriminant() == discriminant) {
+                return role;
+            }
+        }
+        return null;
+    }
+
+    public static RoleLge getRoleByName(String roleName) {
+        for (RoleLge role : RoleLge.values()) {
+            if (role.getRoleName().equals(roleName)) {
                 return role;
             }
         }

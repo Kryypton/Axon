@@ -62,18 +62,20 @@ public class DiscordBotManager extends ListenerAdapter {
     }
 
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-        //logger.info("Slash command received");
+        logger.info("Slash command received" + event.getName());
         if (event.getGuild() == null) return;
         if (event.getName().equals("lge_menu")) SlashCommand.lgeMenu(event);
     }
 
     @Override
     public void onButtonInteraction(ButtonInteractionEvent event) { 
+        logger.info("Button interaction received" + event.getComponentId());
         if (event.getComponentId().startsWith("lge_menu")) ButtonCommand.lgeMenu(event);
     }
 
     @Override
     public void onModalInteraction(ModalInteractionEvent event) {
+        logger.info("Modal interaction received" + event.getModalId());
         if (event.getModalId().startsWith("lge_menu")) ModalCommand.lgeMenu(event);
     }
 }
