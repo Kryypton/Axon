@@ -22,17 +22,18 @@ public class ModalCommand {
                     Character character = null;
                     try {
                         character = AxonApplication.BnetCtrl.getCharacter("hyjal", event.getValue("player_name").getAsString());
+                        AxonApplication.UserLgeCtrl.addCharacterMain(event.getUser().getIdLong(), character);
                     } catch (CharacterNotFoundException e) {
-                        event.getHook().editOriginalEmbeds(Embeds.lgeMenuEntretienGetInfosError(event).build()).setActionRow(ItemComponents.lgeMenuError()).setAttachments().queue();
+                        event.getHook().editOriginalEmbeds(Embeds.lgeMenuEntretienGetInfosError(event).build()).setActionRow(ItemComponents.lgeMenuError(event)).setAttachments().queue();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     if (character == null) return;
                     try {
-                        event.getHook().editOriginalEmbeds(Embeds.lgeMenuEntretienGetInfos(event, character, character.getCharacterMedia()).build()).setAttachments().setActionRow(ItemComponents.lgeMenuEntretienGetInfos()).queue();
+                        event.getHook().editOriginalEmbeds(Embeds.lgeMenuEntretienGetInfos(event, character, character.getCharacterMedia()).build()).setAttachments().setActionRow(ItemComponents.lgeMenuEntretienGetInfos(event)).queue();
                     } catch (CharacterMediaNotFoundException e) {
                         FileUploadBuilderByPath noAvatar = new FileUploadBuilderByPath("no_avatar.png", "src/main/resources/images/guild/characterMedia/no_avatar.png");
-                        event.getHook().editOriginalEmbeds(Embeds.lgeMenuEntretienGetInfos(event, character, noAvatar.getOutPutName()).build()).setAttachments(noAvatar.getFileUpload()).setActionRow(ItemComponents.lgeMenuEntretienGetInfos()).queue();
+                        event.getHook().editOriginalEmbeds(Embeds.lgeMenuEntretienGetInfos(event, character, noAvatar.getOutPutName()).build()).setAttachments(noAvatar.getFileUpload()).setActionRow(ItemComponents.lgeMenuEntretienGetInfos(event)).queue();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -44,17 +45,18 @@ public class ModalCommand {
                     Character character = null;
                     try {
                         character = AxonApplication.BnetCtrl.getCharacter("hyjal", event.getValue("player_name").getAsString());
+                        AxonApplication.UserLgeCtrl.addCharacterMain(event.getUser().getIdLong(), character);
                     } catch (CharacterNotFoundException e) {
-                        event.getHook().editOriginalEmbeds(Embeds.lgeMenuEntretienGetInfosError(event).build()).setActionRow(ItemComponents.lgeMenuError()).setAttachments().queue();
+                        event.getHook().editOriginalEmbeds(Embeds.lgeMenuEntretienGetInfosError(event).build()).setActionRow(ItemComponents.lgeMenuError(event)).setAttachments().queue();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     if (character == null) return;
                     try {
-                        event.getHook().editOriginalEmbeds(Embeds.lgeMenuEntretienGetInfos(event, character, character.getCharacterMedia()).build()).setAttachments().setActionRow(ItemComponents.lgeMenuEntretienGetInfos()).queue();
+                        event.getHook().editOriginalEmbeds(Embeds.lgeMenuEntretienGetInfos(event, character, character.getCharacterMedia()).build()).setAttachments().setActionRow(ItemComponents.lgeMenuEntretienGetInfos(event)).queue();
                     } catch (CharacterMediaNotFoundException e) {
                         FileUploadBuilderByPath noAvatar = new FileUploadBuilderByPath("no_avatar.png", "src/main/resources/images/guild/characterMedia/no_avatar.png");
-                        event.getHook().editOriginalEmbeds(Embeds.lgeMenuEntretienGetInfos(event, character, noAvatar.getOutPutName()).build()).setAttachments(noAvatar.getFileUpload()).setActionRow(ItemComponents.lgeMenuEntretienGetInfos()).queue();
+                        event.getHook().editOriginalEmbeds(Embeds.lgeMenuEntretienGetInfos(event, character, noAvatar.getOutPutName()).build()).setAttachments(noAvatar.getFileUpload()).setActionRow(ItemComponents.lgeMenuEntretienGetInfos(event)).queue();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

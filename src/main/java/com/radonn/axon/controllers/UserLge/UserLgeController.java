@@ -97,6 +97,20 @@ public class UserLgeController {
         }
     }
 
+    @PostMapping("/characters/addMain")
+    public Characters addCharacterMain(@RequestParam Long discordID, @RequestParam Character character) {
+        try {
+            String sql = "INSERT INTO characters (character_id, discord_id, name, is_main, role) VALUES (?, ?, ?, true, 4)";
+            jdbcTemplate.update(sql, character.getId(), discordID, character.getName());
+            return getCharacterById(character.getId());
+        } catch (DuplicateKeyException e) {
+            return getCharacterById(character.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     @PostMapping("/characters/delete")
     public void deleteCharacter(@RequestParam Long id) {
         String sql = "DELETE FROM characters WHERE character_id = ?";
@@ -124,6 +138,13 @@ public class UserLgeController {
     public List<Characters> getCharacterByDiscordId(@RequestParam Long discordId) {
         String sql = "SELECT * FROM characters WHERE discord_id = ?";
         List<Characters> characters = jdbcTemplate.query(sql, new CharacterRowMapper(), discordId);
+        return characters;
+    }
+
+     @GetMapping("/characters/main/getByDiscordId")
+    public Characters getCharacterMainByDiscordId(@RequestParam Long discordId) {
+        String sql = "SELECT * FROM characters WHERE discord_id = ? AND is_main = true";
+        Characters characters = jdbcTemplate.queryForObject(sql, new CharacterRowMapper(), discordId);
         return characters;
     }
 

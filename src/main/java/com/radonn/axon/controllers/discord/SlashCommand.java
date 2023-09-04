@@ -9,9 +9,9 @@ public class SlashCommand {
 
     public static void lgeMenu(SlashCommandInteractionEvent event) {
 
-        FileUploadBuilderByPath loding = new FileUploadBuilderByPath("loading.gif", "src/main/resources/images/guild/animation/loading.gif");
+        FileUploadBuilderByPath loading = new FileUploadBuilderByPath("loading.gif", "src/main/resources/images/guild/animation/loading.gif");
 
-        event.deferReply().setEphemeral(true).setEmbeds(Embeds.loading().build()).setFiles(loding.getFileUpload()).queue();
+        event.deferReply().setEphemeral(false).setEmbeds(Embeds.loading().build()).setFiles(loading.getFileUpload()).queue();
 
         event.getJDA().getGatewayPool().submit((Runnable) () -> {
 
@@ -20,7 +20,7 @@ public class SlashCommand {
             
             event.getHook()
                 .editOriginalEmbeds(Embeds.lgeMenu(image.getOutPutName(), thumbnail.getOutPutName()).build())
-                .setActionRow(ItemComponents.lgeMenu())
+                .setActionRow(ItemComponents.lgeMenu(event))
                 .setFiles(image.getFileUpload(), thumbnail.getFileUpload())
                 .queue();
         });

@@ -127,7 +127,7 @@ public class Embeds {
         EmbedBuilder embed = Embeds.model();
         embed.setTitle("Terminé !");
         embed.setDescription("> L'enssemble des informations ont été collectés. Votre accès au discord en tant que futur membre est en cours de traitement. \n > Vous recevrez une convocation pour qu'un recruteur effectue votre présentation de guilde !");
-        embed.addField("> Attention", "> Elles présentes l'enssemble des conditions ainsi que les différentes procédures appliqués, elles peuvent ne pas être lu. Cependant elles sont appliqués quoi qu'il en coûte et pour tous.", false);
+        embed.addField("> Attention", "> Merci de cliquer sur \"Terminé\" pour finaliser la procédure !", false);
         embed.setThumbnail("attachment://" + thumbnailName);
         return embed;
     }
