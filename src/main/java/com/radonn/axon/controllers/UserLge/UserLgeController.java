@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.radonn.axon.models.userLge.Characters;
+import com.radonn.axon.exceptions.UserLgeCharacterAlreadyExistException;
+import com.radonn.axon.models.userLge.GuildCharacter;
 import com.radonn.axon.models.userLge.RoleLge;
-import com.radonn.axon.models.userLge.Users;
+import com.radonn.axon.models.userLge.GuildUser;
 import com.radonn.axon.models.wow.Character;
 import com.radonn.axon.models.wow.guild.Guild;
 import com.radonn.axon.models.wow.guild.GuildRoster;
@@ -32,26 +33,26 @@ public class UserLgeController {
     }
 
     @GetMapping("/users/getById")
-    public Users getUserById(@RequestParam Long id) {
+    public GuildUser getUserById(@RequestParam Long id) {
         String sql = "SELECT * FROM users WHERE discord_id = ?";
-        Users userLge = jdbcTemplate.queryForObject(sql, new UserLgeRowMapper(), id);
+        GuildUser userLge = jdbcTemplate.queryForObject(sql, new GuildUserLgeRowMapper(), id);
         return userLge;
     }
 
-
     @PostMapping("/users/add")
-    public Users addUser(@RequestParam User user) {
-        Users userLge;
+    public GuildUser addUser(@RequestParam User user) {
+        GuildUser userLge;
         try {
-            userLge = new Users();
+            userLge = new GuildUser();
             userLge.setDiscordID(user.getIdLong());
             userLge.setPseudo(user.getName());
             userLge.setTimeSpend(0L);
             userLge.setLastLoginDate(null);
-            
+
             String sql = "INSERT INTO users (discord_id, pseudo, comming_date, time_spend) VALUES (?, ?, ?, ?)";
-            jdbcTemplate.update(sql, userLge.getDiscordID(), userLge.getPseudo(), userLge.getCommingDate(), userLge.getTimeSpend());
-            
+            jdbcTemplate.update(sql, userLge.getDiscordID(), userLge.getPseudo(), userLge.getCommingDate(),
+                    userLge.getTimeSpend());
+
             return userLge;
         } catch (DuplicateKeyException e) {
             return getUserById(user.getIdLong());
@@ -70,21 +71,22 @@ public class UserLgeController {
     @PostMapping("/users/detectConnexion")
     public void detectConnexionUser(@RequestParam Long id) {
         String sql = "UPDATE users SET last_login_date = ? WHERE discord_id = ?";
-        jdbcTemplate.update(sql, Timestamp.valueOf(LocalDateTime.now()) ,id);
+        jdbcTemplate.update(sql, Timestamp.valueOf(LocalDateTime.now()), id);
     }
 
     @PostMapping("/users/detectDeconnexion")
     public void detectDeconnexionUser(@RequestParam Long id) {
         Timestamp lastLogin = getUserById(id).getLastLoginDate();
         if (lastLogin != null) {
-            long timeSpend = getUserById(id).getTimeSpend() + (Timestamp.valueOf(LocalDateTime.now()).getTime() - lastLogin.getTime());
+            long timeSpend = getUserById(id).getTimeSpend()
+                    + (Timestamp.valueOf(LocalDateTime.now()).getTime() - lastLogin.getTime());
             String sql = "UPDATE users SET time_spend = ? WHERE discord_id = ?";
             jdbcTemplate.update(sql, timeSpend, id);
         }
     }
 
     @PostMapping("/characters/add")
-    public Characters addCharacter(@RequestParam Long discordID, @RequestParam Character character) {
+    public GuildCharacter addCharacter(@RequestParam Long discordID, @RequestParam Character character) {
         try {
             String sql = "INSERT INTO characters (character_id, discord_id, name, is_main, role) VALUES (?, ?, ?, null, null)";
             jdbcTemplate.update(sql, character.getId(), discordID, character.getName());
@@ -98,13 +100,14 @@ public class UserLgeController {
     }
 
     @PostMapping("/characters/addMain")
-    public Characters addCharacterMain(@RequestParam Long discordID, @RequestParam Character character) {
+    public GuildCharacter addCharacterMain(@RequestParam Long discordID, @RequestParam Character character)
+            throws UserLgeCharacterAlreadyExistException {
         try {
             String sql = "INSERT INTO characters (character_id, discord_id, name, is_main, role) VALUES (?, ?, ?, true, 4)";
             jdbcTemplate.update(sql, character.getId(), discordID, character.getName());
             return getCharacterById(character.getId());
         } catch (DuplicateKeyException e) {
-            return getCharacterById(character.getId());
+            throw new UserLgeCharacterAlreadyExistException("Le personnage " + character.getName() + " existe déjà !");
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -128,33 +131,36 @@ public class UserLgeController {
     }
 
     @GetMapping("/characters/getById")
-    public Characters getCharacterById(@RequestParam Long id) {
+    public GuildCharacter getCharacterById(@RequestParam Long id) {
         String sql = "SELECT * FROM characters WHERE character_id = ?";
-        Characters character = jdbcTemplate.queryForObject(sql, new CharacterRowMapper(), id);
+        GuildCharacter character = jdbcTemplate.queryForObject(sql, new CharacterRowMapper(), id);
         return character;
     }
 
     @GetMapping("/characters/getByDiscordId")
-    public List<Characters> getCharacterByDiscordId(@RequestParam Long discordId) {
+    public List<GuildCharacter> getCharacterByDiscordId(@RequestParam Long discordId) {
         String sql = "SELECT * FROM characters WHERE discord_id = ?";
-        List<Characters> characters = jdbcTemplate.query(sql, new CharacterRowMapper(), discordId);
+        List<GuildCharacter> characters = jdbcTemplate.query(sql, new CharacterRowMapper(), discordId);
         return characters;
     }
 
-     @GetMapping("/characters/main/getByDiscordId")
-    public Characters getCharacterMainByDiscordId(@RequestParam Long discordId) {
+    @GetMapping("/characters/main/getByDiscordId")
+    public GuildCharacter getCharacterMainByDiscordId(@RequestParam Long discordId) {
         String sql = "SELECT * FROM characters WHERE discord_id = ? AND is_main = true";
-        Characters characters = jdbcTemplate.queryForObject(sql, new CharacterRowMapper(), discordId);
+        GuildCharacter characters = jdbcTemplate.queryForObject(sql, new CharacterRowMapper(), discordId);
         return characters;
     }
 
     @PostMapping("/characters/update")
-    public boolean updateCharacter(@RequestParam Guild guild, @RequestParam Characters character) {
+    public boolean updateCharacter(@RequestParam Guild guild, @RequestParam GuildCharacter character) {
         try {
             String sql = "UPDATE characters SET is_main = ?, role = ? WHERE character_id = ?";
             GuildRoster gr = guild.getGuildRoster();
-            int rank = gr.getMemberRank(character.getName()); 
-            jdbcTemplate.update(sql, (rank != RoleLge.getRoleByName("Reroll").getDiscriminant() || rank != RoleLge.getRoleByName("N/A").getDiscriminant()), rank, character.getCharacterID());
+            int rank = gr.getMemberRank(character.getName());
+            jdbcTemplate.update(sql,
+                    (rank != RoleLge.getRoleByName("Reroll").getDiscriminant()
+                            || rank != RoleLge.getRoleByName("N/A").getDiscriminant()),
+                    rank, character.getCharacterID());
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -165,11 +171,41 @@ public class UserLgeController {
     @PostMapping("/characters/updateByDiscordID")
     public boolean updateCharacterByDiscordID(@RequestParam Guild guild, @RequestParam Long discord_id) {
         try {
-            List<Characters> characters = getCharacterByDiscordId(discord_id);
-            for (Characters character : characters) {
+            List<GuildCharacter> characters = getCharacterByDiscordId(discord_id);
+            for (GuildCharacter character : characters) {
                 System.out.println(character.getName());
                 updateCharacter(guild, character);
             }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @PostMapping("/recruitements/valid")
+    public boolean validRecruitment(@RequestParam Long characterID,
+            @RequestParam Timestamp entretienDate) {
+        try {
+            String sql = "UPDATE recruitments SET recrutement_date = ? WHERE character_id = ?";
+            jdbcTemplate.update(sql, entretienDate, characterID);
+
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @PostMapping("/recruitements/convoc")
+    public boolean convocRecruitment(@RequestParam Long recruiterDiscordID, @RequestParam Long characterID,
+            @RequestParam Timestamp convocationDate) {
+        try {
+
+            String sql = "INSERT INTO recruitments (RECRUITER_DISCORD_ID, CHARACTER_ID, CONVOCATION_DATE, recrutement_date) VALUES (?, ?, ?, null)";
+            jdbcTemplate.update(sql, recruiterDiscordID, characterID, convocationDate);
+
             return true;
         } catch (Exception e) {
             e.printStackTrace();

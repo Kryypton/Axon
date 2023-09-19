@@ -10,23 +10,22 @@ import javax.persistence.Table;
 
 import javax.persistence.Column;
 
-
 @Entity
 @Table(name = "users")
-public class Users {
+public class GuildUser {
 
     @Id
     @Column(name = "discord_id")
     private Long discordID;
-    @Column (name = "pseudo")
+    @Column(name = "pseudo")
     private String pseudo;
-    @Column (name = "comming_date")
+    @Column(name = "comming_date")
     private Timestamp commingDate = Timestamp.valueOf(LocalDateTime.now());
-    @Column (name = "last_login_date")
+    @Column(name = "last_login_date")
     private Timestamp lastLoginDate;
-    @Column (name = "time_spend")
-    private long timeSpend; 
-    
+    @Column(name = "time_spend")
+    private long timeSpend;
+
     public Long getDiscordID() {
         return discordID;
     }

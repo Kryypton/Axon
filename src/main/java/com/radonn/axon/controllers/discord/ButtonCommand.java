@@ -3,7 +3,7 @@ package com.radonn.axon.controllers.discord;
 import java.util.ArrayList;
 import com.radonn.axon.AxonApplication;
 import com.radonn.axon.exceptions.CharacterNotFoundException;
-import com.radonn.axon.models.userLge.Characters;
+import com.radonn.axon.models.userLge.GuildCharacter;
 import com.radonn.axon.models.wow.Character;
 import com.radonn.axon.utils.FileUploadBuilderByPath;
 import com.radonn.axon.views.discord.builder.Embeds;
@@ -20,6 +20,7 @@ public class ButtonCommand {
         /// Entretien
             case "lge_menu_entretien":
                 event.getJDA().getGatewayPool().submit((Runnable) () -> {
+                    AxonApplication.UserLgeCtrl.deleteCharacterByDiscordID(event.getUser().getIdLong());
                     event.replyModal(Modals.modEntretien(event.getUser())).queue();
                 });
                 break;
@@ -27,7 +28,6 @@ public class ButtonCommand {
             case "lge_menu_entretien_retry":
                 event.getJDA().getGatewayPool().submit((Runnable) () -> {
                     AxonApplication.UserLgeCtrl.deleteCharacterByDiscordID(event.getUser().getIdLong());
-                    event.getHook().editOriginalAttachments().queue();
                     event.getHook().deleteOriginal().queue();
                     event.replyModal(Modals.modEntretienRetry(event.getUser())).queue();
                 });
@@ -71,12 +71,12 @@ public class ButtonCommand {
                         FileUploadBuilderByPath loading = new FileUploadBuilderByPath("loading.gif", "src/main/resources/images/guild/animation/loading.gif");
                         event.editMessageEmbeds().setEmbeds(Embeds.loading().build()).setFiles(loading.getFileUpload()).queue();
 
-                        Characters user = AxonApplication.UserLgeCtrl.getCharacterMainByDiscordId(event.getUser().getIdLong());
+                        GuildCharacter user = AxonApplication.UserLgeCtrl.getCharacterMainByDiscordId(event.getUser().getIdLong());
                         Character character = AxonApplication.BnetCtrl.getCharacter("hyjal", user.getName().toLowerCase());
-                        event.getMember().modifyNickname(character.getName()).queue();
+                        //event.getMember().modifyNickname(character.getName()).queue();
                         ArrayList<Role> roles = new ArrayList<Role>();
-                        roles.add(event.getGuild().getRolesByName("Novice", true).size() != 0 ? event.getGuild().getRolesByName("Novice", true).get(0) : event.getGuild().createRole().setName("Novice").complete().getJDA().getRolesByName("Novice", true).get(0));
-                        roles.add(event.getGuild().getRolesByName("---- Bloc Principal ----", true).size() != 0 ? event.getGuild().getRolesByName("---- Bloc Principal ----", true).get(0) : event.getGuild().createRole().setName("---- Bloc Principal ----").complete().getJDA().getRolesByName("---- Bloc Principal ----", true).get(0));
+                        //roles.add(event.getGuild().getRolesByName("Novice", true).size() != 0 ? event.getGuild().getRolesByName("Novice", true).get(0) : event.getGuild().createRole().setName("Novice").complete().getJDA().getRolesByName("Novice", true).get(0));
+                        //roles.add(event.getGuild().getRolesByName("---- Bloc Principal ----", true).size() != 0 ? event.getGuild().getRolesByName("---- Bloc Principal ----", true).get(0) : event.getGuild().createRole().setName("---- Bloc Principal ----").complete().getJDA().getRolesByName("---- Bloc Principal ----", true).get(0));
                         roles.add(event.getGuild().getRolesByName(character.getRace().getName(), true).size() != 0 ? event.getGuild().getRolesByName(character.getRace().getName(), true).get(0) : event.getGuild().createRole().setName(character.getRace().getName()).complete().getJDA().getRolesByName(character.getRace().getName(), true).get(0));
                         roles.add(event.getGuild().getRolesByName(character.getCharacterClass().getName(), true).size() != 0 ? event.getGuild().getRolesByName(character.getCharacterClass().getName(), true).get(0) : event.getGuild().createRole().setName(character.getCharacterClass().getName()).complete().getJDA().getRolesByName(character.getCharacterClass().getName(), true).get(0));
                         roles.add(event.getGuild().getRolesByName(character.getActiveSpec().getName(), true).size() != 0 ? event.getGuild().getRolesByName(character.getActiveSpec().getName(), true).get(0) : event.getGuild().createRole().setName(character.getActiveSpec().getName()).complete().getJDA().getRolesByName(character.getActiveSpec().getName(), true).get(0));
@@ -84,15 +84,46 @@ public class ButtonCommand {
                         roles.add(event.getGuild().getRolesByName(character.getFaction().getName(), true).size() != 0 ? event.getGuild().getRolesByName(character.getFaction().getName(), true).get(0) : event.getGuild().createRole().setName(character.getFaction().getName()).complete().getJDA().getRolesByName(character.getFaction().getName(), true).get(0));
                         roles.forEach(role -> {
                             event.getGuild().addRoleToMember(event.getMember(), role).queue();
-                        });
-                        //event.getGuild().removeRoleFromMember(event.getMember(), event.getGuild().getRolesByName("0-arrivé", true).get(0)).queue();
+                        }); 
+                        event.getHook().deleteOriginal().queue();
+                        event.getGuild().removeRoleFromMember(event.getMember(), event.getGuild().getRolesByName("0 - arrivé", true).get(0)).queue();
+                        event.getGuild().getTextChannelById("1057477730830143589").sendMessageEmbeds(Embeds.lgeMenuEntretienCallBack(event.getJDA(), AxonApplication.UserLgeCtrl.getUserById(event.getUser().getIdLong())).build()).queue();
                     } catch (CharacterNotFoundException e) {
                         e.printStackTrace();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 });
+                break;
+            
+            case "lge_menu_entretien_complete_integration":
+                event.getJDA().getGatewayPool().submit((Runnable) () -> {
+                    try {
 
+
+                        GuildCharacter user = AxonApplication.UserLgeCtrl.getCharacterMainByDiscordId(event.getIdLong());
+                        Character character = AxonApplication.BnetCtrl.getCharacter("hyjal", user.getName().toLowerCase());
+                        event.getMember().modifyNickname(character.getName()).queue();
+                        ArrayList<Role> roles = new ArrayList<Role>();
+                        //roles.add(event.getGuild().getRolesByName("Novice", true).size() != 0 ? event.getGuild().getRolesByName("Novice", true).get(0) : event.getGuild().createRole().setName("Novice").complete().getJDA().getRolesByName("Novice", true).get(0));
+                        //roles.add(event.getGuild().getRolesByName("---- Bloc Principal ----", true).size() != 0 ? event.getGuild().getRolesByName("---- Bloc Principal ----", true).get(0) : event.getGuild().createRole().setName("---- Bloc Principal ----").complete().getJDA().getRolesByName("---- Bloc Principal ----", true).get(0));
+                        roles.add(event.getGuild().getRolesByName(character.getRace().getName(), true).size() != 0 ? event.getGuild().getRolesByName(character.getRace().getName(), true).get(0) : event.getGuild().createRole().setName(character.getRace().getName()).complete().getJDA().getRolesByName(character.getRace().getName(), true).get(0));
+                        roles.add(event.getGuild().getRolesByName(character.getCharacterClass().getName(), true).size() != 0 ? event.getGuild().getRolesByName(character.getCharacterClass().getName(), true).get(0) : event.getGuild().createRole().setName(character.getCharacterClass().getName()).complete().getJDA().getRolesByName(character.getCharacterClass().getName(), true).get(0));
+                        roles.add(event.getGuild().getRolesByName(character.getActiveSpec().getName(), true).size() != 0 ? event.getGuild().getRolesByName(character.getActiveSpec().getName(), true).get(0) : event.getGuild().createRole().setName(character.getActiveSpec().getName()).complete().getJDA().getRolesByName(character.getActiveSpec().getName(), true).get(0));
+                        roles.add(event.getGuild().getRolesByName(character.getPlayableSpecialization().getRole().getName(), true).size() != 0 ? event.getGuild().getRolesByName(character.getPlayableSpecialization().getRole().getName(), true).get(0) : event.getGuild().createRole().setName(character.getPlayableSpecialization().getRole().getName()).complete().getJDA().getRolesByName(character.getPlayableSpecialization().getRole().getName(), true).get(0));
+                        roles.add(event.getGuild().getRolesByName(character.getFaction().getName(), true).size() != 0 ? event.getGuild().getRolesByName(character.getFaction().getName(), true).get(0) : event.getGuild().createRole().setName(character.getFaction().getName()).complete().getJDA().getRolesByName(character.getFaction().getName(), true).get(0));
+                        roles.forEach(role -> {
+                            event.getGuild().addRoleToMember(event.getMember(), role).queue();
+                        }); 
+                        event.getHook().deleteOriginal().queue();
+                        event.getGuild().removeRoleFromMember(event.getMember(), event.getGuild().getRolesByName("0 - arrivé", true).get(0)).queue();
+
+                    } catch (CharacterNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
                 break;
 
         /// Invite

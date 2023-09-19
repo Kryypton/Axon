@@ -5,9 +5,12 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.radonn.axon.AxonApplication;
+import com.radonn.axon.exceptions.CharacterNotFoundException;
+
 @Entity
-@Table(name = "characters")
-public class Characters {
+@Table(name = "GuildCharacters")
+public class GuildCharacter {
 
     @Id
     @Column(name = "character_id")
@@ -63,5 +66,9 @@ public class Characters {
 
     public RoleLge getRoleLge() {
         return RoleLge.getRoleByDiscriminant(this.getRole());
+    }
+
+    public com.radonn.axon.models.wow.Character getCharacter() throws CharacterNotFoundException {
+        return AxonApplication.BnetCtrl.getCharacter("hyjal", this.getName());
     }
 }

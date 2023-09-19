@@ -4,13 +4,13 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.radonn.axon.models.userLge.Users;
+import com.radonn.axon.models.userLge.GuildUser;
 
-public class UserLgeRowMapper implements RowMapper<Users> {
+public class GuildUserLgeRowMapper implements RowMapper<GuildUser> {
 
     @Override
-    public Users mapRow(ResultSet rs, int rowNum) throws SQLException {
-        Users userLge = new Users();
+    public GuildUser mapRow(ResultSet rs, int rowNum) throws SQLException {
+        GuildUser userLge = new GuildUser();
         userLge.setDiscordID(rs.getLong("discord_id"));
         userLge.setPseudo(rs.getString("pseudo"));
         userLge.setCommingDate(rs.getTimestamp("comming_date"));

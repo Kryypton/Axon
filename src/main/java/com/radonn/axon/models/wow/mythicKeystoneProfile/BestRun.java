@@ -6,21 +6,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.radonn.axon.models.wow.base.Playable;
 
 public class BestRun implements Comparable<BestRun> {
-    @JsonProperty("completed_timestamp")
-    private long completedTimestamp;
-    private int duration;
-    @JsonProperty("keystone_level")
-    private int keystoneLevel;
-    @JsonProperty("keystone_affixes")
-    private List<Playable> keystoneAffixes;
-    private List<CharacterMythic> members;
-    private Playable dungeon;
-    @JsonProperty("is_completed_within_time")
-    private boolean isCompletedWithinTime;
-    @JsonProperty("mythic_rating")
-    private Rating mythicRating;
-    @JsonProperty("map_rating")
-    private Rating mapRating;
+	@JsonProperty("completed_timestamp")
+	private long completedTimestamp;
+	private int duration;
+	@JsonProperty("keystone_level")
+	private int keystoneLevel;
+	@JsonProperty("keystone_affixes")
+	private List<Playable> keystoneAffixes;
+	private List<CharacterMythic> members;
+	private Playable dungeon;
+	@JsonProperty("is_completed_within_time")
+	private boolean isCompletedWithinTime;
+	@JsonProperty("mythic_rating")
+	private Rating mythicRating;
+	@JsonProperty("map_rating")
+	private Rating mapRating;
 
 	public long getCompletedTimestamp() {
 		return completedTimestamp;
@@ -62,4 +62,12 @@ public class BestRun implements Comparable<BestRun> {
 	public int compareTo(BestRun arg0) {
 		return (int) (this.getMythicRating().getRating() - arg0.getMythicRating().getRating());
 	}
+
+	@Override
+	public String toString() {
+		return this.getDungeon().getName() + " - " + this.getKeystoneLevel() + " - "
+				+ this.getMythicRating().getRating() + " - (" + this.getKeystoneAffixes().get(0).getName().charAt(0)
+				+ ")";
+	}
+
 }

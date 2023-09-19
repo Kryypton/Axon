@@ -5,13 +5,13 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import com.radonn.axon.models.userLge.Characters;
+import com.radonn.axon.models.userLge.GuildCharacter;
 
-public class CharacterRowMapper implements RowMapper<Characters> {
+public class CharacterRowMapper implements RowMapper<GuildCharacter> {
     
     @Override
-    public Characters mapRow(ResultSet rs, int rowNum) throws SQLException {
-        Characters character = new Characters();
+    public GuildCharacter mapRow(ResultSet rs, int rowNum) throws SQLException {
+        GuildCharacter character = new GuildCharacter();
         character.setCharacterID(rs.getLong("character_id"));
         character.setDiscordID(rs.getLong("discord_id"));
         character.setName(rs.getString("name"));

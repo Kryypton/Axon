@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.interactions.modals.ModalInteraction;
 import com.radonn.axon.AxonApplication;
 import com.radonn.axon.exceptions.CharacterMediaNotFoundException;
 import com.radonn.axon.exceptions.CharacterNotFoundException;
+import com.radonn.axon.exceptions.UserLgeCharacterAlreadyExistException;
 import com.radonn.axon.models.wow.Character;
 import com.radonn.axon.utils.FileUploadBuilderByPath;
 import com.radonn.axon.views.discord.builder.*;
@@ -24,6 +25,9 @@ public class ModalCommand {
                         character = AxonApplication.BnetCtrl.getCharacter("hyjal", event.getValue("player_name").getAsString());
                         AxonApplication.UserLgeCtrl.addCharacterMain(event.getUser().getIdLong(), character);
                     } catch (CharacterNotFoundException e) {
+                        event.getHook().editOriginalEmbeds(Embeds.lgeMenuEntretienGetInfosError(event).build()).setActionRow(ItemComponents.lgeMenuError(event)).setAttachments().queue();
+                    } catch (UserLgeCharacterAlreadyExistException e) {
+                        character = null; 
                         event.getHook().editOriginalEmbeds(Embeds.lgeMenuEntretienGetInfosError(event).build()).setActionRow(ItemComponents.lgeMenuError(event)).setAttachments().queue();
                     } catch (Exception e) {
                         e.printStackTrace();
