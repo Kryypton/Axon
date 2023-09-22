@@ -2,6 +2,7 @@ package com.radonn.axon.views.discord.builder;
 
 import java.awt.Color;
 import java.time.Instant;
+import java.util.List;
 
 import com.radonn.axon.AxonApplication;
 import com.radonn.axon.exceptions.CharacterMediaNotFoundException;
@@ -15,7 +16,9 @@ import com.radonn.axon.models.wow.mythicKeystoneProfile.MythicKeystoneProfile;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.modals.ModalInteraction;
 
 public class Embeds {
@@ -53,6 +56,7 @@ public class Embeds {
     embed.addField("",
         "Nous vous remercions de votre attention et nous espérons que vous passerez un agréable moment parmi les Gardiens Éternels sur notre serveur Discord !",
         false);
+    System.out.println(imageName);
     embed.setImage("attachment://" + imageName);
     embed.setThumbnail("attachment://" + thumbnailName);
     return embed;
@@ -370,6 +374,33 @@ public class Embeds {
     embed.addField("> Solutions : ",
         "Vous pouvez contacter un Officier pour qu'il vous attribue manuellement le status d'invité pour accéder au discord.",
         false);
+    return embed;
+  }
+
+  public static EmbedBuilder massMoovePlayerCommand(SlashCommandInteractionEvent event, String thumbnailName,
+      List<Member> memberList) {
+    EmbedBuilder embed = Embeds.model();
+    embed.setTitle("Mass Moove Player");
+    embed.setDescription(
+        "Vous êtes sur le point de déplacer tous les joueurs de la guilde vers un autre channel vocal.");
+    embed.addField("> Channel actuel :", event.getOption("channel_actual").getAsChannel().getAsMention(),
+        true);
+    embed.addField("> Channel de redirection :",
+        event.getOption("channel_redirection").getAsChannel().getAsMention(), true);
+    try {
+      embed.addField("> Rôle :", event.getOption("role").getAsRole().getName(), true);
+    } catch (Exception e) {
+      embed.addField("> Rôle :", "Aucun", true);
+    }
+    try {
+      StringBuilder str = new StringBuilder();
+      memberList.forEach(m -> str.append(m.getAsMention() + ","));
+      embed.addField("> Utilisateurs concernés :",
+          str.toString(), false);
+    } catch (Exception e) {
+      embed.addField("> Utilisateurs concernés :", "Aucuns", false);
+    }
+    embed.setThumbnail("attachment://" + thumbnailName);
     return embed;
   }
 
