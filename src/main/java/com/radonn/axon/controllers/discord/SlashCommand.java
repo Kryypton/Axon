@@ -76,6 +76,7 @@ public class SlashCommand {
     private static void movePlayer(Member member, AudioChannel channel, SlashCommandInteractionEvent event)
             throws InterruptedException {
         try {
+            Thread.sleep(100);
             event.getGuild().moveVoiceMember(member, channel).complete(false);
         } catch (RateLimitedException e) {
             Thread.sleep(500);

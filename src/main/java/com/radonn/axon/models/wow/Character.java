@@ -1,4 +1,5 @@
 package com.radonn.axon.models.wow;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.radonn.axon.controllers.wow.BlizzardApiController;
 import com.radonn.axon.exceptions.AchievementsNotFoundException;
@@ -6,43 +7,45 @@ import com.radonn.axon.exceptions.CharacterMediaNotFoundException;
 import com.radonn.axon.exceptions.EquipmentNotFoundException;
 import com.radonn.axon.exceptions.MythicKeystoneProfileNotFoundException;
 import com.radonn.axon.exceptions.PlayableSpecializationNotFoundException;
+import com.radonn.axon.exceptions.RaidCompletitionNotFoundException;
 import com.radonn.axon.models.wow.achievements.Achievements;
 import com.radonn.axon.models.wow.base.*;
 import com.radonn.axon.models.wow.characterMedia.CharacterMedia;
+import com.radonn.axon.models.wow.encounters.Raids;
 import com.radonn.axon.models.wow.equipment.Equipment;
 import com.radonn.axon.models.wow.mythicKeystoneProfile.MythicKeystoneProfile;
 import com.radonn.axon.models.wow.specializations.PlayableSpecialization;
 
 public class Character {
 
-    @JsonProperty("_links")
-    private Links links;
-    private long id;
-    private String name;
-    private Descriptor gender;
-    private Descriptor faction;
-    private Playable race;
-    @JsonProperty("character_class")
-    private Playable characterClass;
-    @JsonProperty("active_spec")
-    private Playable activeSpec;
-    private Realm realm;
-    private Guild guild;
-    private int level;
-    @JsonProperty("experience")
-    private int experience;
-    @JsonProperty("achievement_points")
-    private int achievementPoints;
-    @JsonProperty("last_login_timestamp")
-    private long lastLoginTimestamp;
-    @JsonProperty("average_item_level")
-    private int averageItemLevel;
-    @JsonProperty("equipped_item_level")
-    private int equippedItemLevel;
-    @JsonProperty("active_title")
-    private Playable activeTitle;
-    @JsonProperty("covenant_progress")
-    private CovenantProgress covenantProgress;
+	@JsonProperty("_links")
+	private Links links;
+	private long id;
+	private String name;
+	private Descriptor gender;
+	private Descriptor faction;
+	private Playable race;
+	@JsonProperty("character_class")
+	private Playable characterClass;
+	@JsonProperty("active_spec")
+	private Playable activeSpec;
+	private Realm realm;
+	private Guild guild;
+	private int level;
+	@JsonProperty("experience")
+	private int experience;
+	@JsonProperty("achievement_points")
+	private int achievementPoints;
+	@JsonProperty("last_login_timestamp")
+	private long lastLoginTimestamp;
+	@JsonProperty("average_item_level")
+	private int averageItemLevel;
+	@JsonProperty("equipped_item_level")
+	private int equippedItemLevel;
+	@JsonProperty("active_title")
+	private Playable activeTitle;
+	@JsonProperty("covenant_progress")
+	private CovenantProgress covenantProgress;
 
 	@SuppressWarnings("unused")
 	private Link equipment;
@@ -123,7 +126,8 @@ public class Character {
 
 	public Equipment getEquipment() {
 		try {
-			return new BlizzardApiController().getEquipment(realm.getName().toLowerCase(), name.toLowerCase());
+			return new BlizzardApiController().getEquipment(realm.getName().toLowerCase(),
+					name.toLowerCase());
 		} catch (EquipmentNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -132,7 +136,8 @@ public class Character {
 
 	public Achievements getAchievements() {
 		try {
-			return new BlizzardApiController().getAchievements(realm.getName().toLowerCase(), name.toLowerCase());
+			return new BlizzardApiController().getAchievements(realm.getName().toLowerCase(),
+					name.toLowerCase());
 		} catch (AchievementsNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -149,11 +154,18 @@ public class Character {
 	}
 
 	public CharacterMedia getCharacterMedia() throws CharacterMediaNotFoundException {
-		return new BlizzardApiController().getCharacterMedia(realm.getName().toLowerCase(), name.toLowerCase());
+		return new BlizzardApiController().getCharacterMedia(realm.getName().toLowerCase(),
+				name.toLowerCase());
 	}
 
-	public MythicKeystoneProfile getMythicKeystoneProfile() throws MythicKeystoneProfileNotFoundException{
-		return new BlizzardApiController().getMythicKeystoneProfile(realm.getName().toLowerCase(), name.toLowerCase());
+	public MythicKeystoneProfile getMythicKeystoneProfile()
+			throws MythicKeystoneProfileNotFoundException {
+		return new BlizzardApiController().getMythicKeystoneProfile(realm.getName().toLowerCase(),
+				name.toLowerCase());
 	}
 
+	public Raids getMythicRaidProfile() throws RaidCompletitionNotFoundException {
+		return new BlizzardApiController().getRaidCompletition(realm.getName().toLowerCase(),
+				name.toLowerCase());
+	}
 }

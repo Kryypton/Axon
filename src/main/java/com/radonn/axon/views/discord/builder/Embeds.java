@@ -2,6 +2,7 @@ package com.radonn.axon.views.discord.builder;
 
 import java.awt.Color;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.radonn.axon.AxonApplication;
@@ -17,7 +18,9 @@ import com.radonn.axon.models.wow.mythicKeystoneProfile.MythicKeystoneProfile;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.MessageEmbed.Field;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.modals.ModalInteraction;
 
@@ -44,7 +47,8 @@ public class Embeds {
 
   public static EmbedBuilder lgeMenu(String imageName, String thumbnailName) {
     EmbedBuilder embed = Embeds.model();
-    embed.setTitle("<:lge_enter:1099955038408945694>\u0020\u0020- __Bienvenue chez les Gardiens Éternels !__");
+    embed.setTitle(
+        "<:lge_enter:1099955038408945694>\u0020\u0020- __Bienvenue chez les Gardiens Éternels !__");
     embed.setDescription(
         "> Avant d'accéder au discord, veuillez prendre connaissance des informations importantes suivantes :");
     embed.addField("<:lge_person:1099955042800373772>\u0020\u0020- Acc\u00E8s Recrutement :",
@@ -77,8 +81,7 @@ public class Embeds {
     try {
       embed.addField("> RIO :",
           (character.getMythicKeystoneProfile().getCurrentMythicRating() != null)
-              ? character.getMythicKeystoneProfile().getCurrentMythicRating()
-                  .getRating().toString()
+              ? character.getMythicKeystoneProfile().getCurrentMythicRating().getRating().toString()
               : "Pas de cl\u00E9 RIO",
           true);
     } catch (MythicKeystoneProfileNotFoundException e) {
@@ -86,8 +89,8 @@ public class Embeds {
     }
     embed.addField("> Armurie :",
         "[Mon Profile](https://worldofwarcraft.blizzard.com/fr-fr/character/eu/"
-            + character.getRealm().getSlug().toLowerCase() + "/"
-            + character.getName().toLowerCase() + ")",
+            + character.getRealm().getSlug().toLowerCase() + "/" + character.getName().toLowerCase()
+            + ")",
         true);
     embed.addField("<:avertissement:1116643369507115078> - Attention",
         "> Il est important de noter que les informations présentent sont dynamiquement mise à jour lors de votre dernière déconexion et peuvent donc changer.",
@@ -113,8 +116,7 @@ public class Embeds {
     try {
       embed.addField("> RIO :",
           (character.getMythicKeystoneProfile().getCurrentMythicRating() != null)
-              ? character.getMythicKeystoneProfile().getCurrentMythicRating()
-                  .getRating().toString()
+              ? character.getMythicKeystoneProfile().getCurrentMythicRating().getRating().toString()
               : "Pas de cl\u00E9 RIO",
           true);
     } catch (MythicKeystoneProfileNotFoundException e) {
@@ -122,8 +124,8 @@ public class Embeds {
     }
     embed.addField("> Armurie :",
         "[Mon Profile](https://worldofwarcraft.blizzard.com/fr-fr/character/eu/"
-            + character.getRealm().getSlug().toLowerCase() + "/"
-            + character.getName().toLowerCase() + ")",
+            + character.getRealm().getSlug().toLowerCase() + "/" + character.getName().toLowerCase()
+            + ")",
         true);
     embed.addField("<:avertissement:1116643369507115078> - Attention",
         "> Il est important de noter que les informations présentent sont dynamiquement mise à jour lors de votre dernière déconexion et peuvent donc changer.",
@@ -135,7 +137,8 @@ public class Embeds {
 
   public static EmbedBuilder lgeMenuEntretienGetInfosError(ModalInteraction event) {
     EmbedBuilder embed = Embeds.model();
-    embed.setTitle(event.getMember().getEffectiveName() + ", nous n'avons pas trouver votre personnage.");
+    embed.setTitle(
+        event.getMember().getEffectiveName() + ", nous n'avons pas trouver votre personnage.");
     embed.setDescription(
         "### <:lge_person:1099955042800373772> - Pourquoi ? \n > Afin de faciliter le fonctionnement interne tel que les events et les différentes fonctionnalités, nous devons recueillir vos informations via l'Api de Blizzard.");
     embed.addField("> Nouveau personnage ? ", event.getValue("player_name").getAsString()
@@ -159,7 +162,8 @@ public class Embeds {
   public static EmbedBuilder lgeMenuEntretienCharte(String thumbnailName) {
     EmbedBuilder embed = Embeds.model();
     embed.setTitle("Charte de la guilde");
-    embed.setDescription("> La charte pr\u00E9sente les objectifs de guilde et le contenu propos\u00E9.");
+    embed.setDescription(
+        "> La charte pr\u00E9sente les objectifs de guilde et le contenu propos\u00E9.");
     embed.setThumbnail("attachment://" + thumbnailName);
     return embed;
   }
@@ -192,117 +196,25 @@ public class Embeds {
     embed.setTitle("Terminé !");
     embed.setDescription(
         "> L'enssemble des informations ont été collectés. Votre accès au discord en tant que futur membre est en cours de traitement. \n > Vous recevrez une convocation pour qu'un recruteur effectue votre présentation de guilde !");
-    embed.addField("> Attention", "> Merci de cliquer sur \"Terminé\" pour finaliser la procédure !",
-        false);
+    embed.addField("> Attention",
+        "> Merci de cliquer sur \"Terminé\" pour finaliser la procédure !", false);
     embed.setThumbnail("attachment://" + thumbnailName);
     return embed;
   }
 
   public static EmbedBuilder lgeMenuEntretienCallBack(JDA jda, GuildUser user) {
-    User usr = jda.retrieveUserById(user.getDiscordID()).complete();
     EmbedBuilder embed = Embeds.model();
-
+    embed.setTitle(":lge_livrable: - Proc\u00E9dure de requ\u00EAtes d'informations termin\u00E9e");
+    embed.setDescription("> __Voici les information conernant cet utilisateur :__");
     try {
-      Character character = AxonApplication.UserLgeCtrl
-          .getCharacterMainByDiscordId(Long.valueOf(user.getDiscordID())).getCharacter();
-      embed.setTitle(":lge_livrable: - Proc\u00E9dure de requ\u00EAtes d'informations termin\u00E9e");
-      embed.setDescription("> __Voici les information conernant cet utilisateur :__");
-      embed.addField("ID Discord :", "" + "`" + user.getDiscordID() + "`", true);
-      embed.addField("Nom discord :", "`" + usr.getName() + "`", true);
-      embed.addField("Date de cr\u00E9ation :",
-          "`" + usr.getTimeCreated().toLocalDate().toString() + "`",
-          true);
-      embed.addField("Pseudo en jeu :",
-          "`" + AxonApplication.UserLgeCtrl.getCharacterByDiscordId(user.getDiscordID())
-              .get(0).getName()
-              + "`"
-              + " | **Visuel Discord :**" + usr.getAsMention(),
-          false);
-      embed.addField("**Informations G\u00E9n\u00E9rals :**",
-          "**Classe :**"
-              + " "
-              + jda.getEmojisByName(character.getCharacterClass().getName()
-                  .toLowerCase().replace(" ", "")
-                  .replace("é", "e").replace("ï", "i")
-                  .replace("ê", "e").replace("-", "")
-                  .replace("\'", ""), true).get(0)
-                  .getAsMention()
-              + " " + character.getCharacterClass().getName() + "\n" +
-              "**Rôle :**"
-              + " "
-              + jda.getEmojisByName(
-                  character.getPlayableSpecialization().getRole()
-                      .getName().replace(" ", "")
-                      .replace("é", "e")
-                      .replace("â", "a"),
-                  true)
-                  .get(0).getAsMention()
-              + " "
-              + character.getPlayableSpecialization().getRole().getName()
-              + "\n" +
-              "**Spec :**"
-              + " "
-              + character.getActiveSpec().getName() + "\n" +
-              "**Race :**"
-              + " "
-              + jda.getEmojisByName(
-                  character.getRace().getName().replace(" ", ""),
-                  true).get(0)
-                  .getAsMention()
-              + " " + character.getRace().getName() + "\n" +
-              "**Faction :**"
-              + " "
-              + jda.getEmojisByName(character.getFaction().getName()
-                  .replace(" ", ""), true).get(0)
-                  .getAsMention()
-              + " " + character.getFaction().getName() + "\n" +
-              "**ILVL :**" + " " + character.getEquippedItemLevel() + "\n",
-          false);
-      try {
-        MythicKeystoneProfile mk = AxonApplication.UserLgeCtrl
-            .getCharacterByDiscordId(user.getDiscordID())
-            .get(0).getCharacter().getMythicKeystoneProfile();
-        StringBuilder sb = new StringBuilder();
-        for (BestRun bestRun : mk.getLastSeason().getBestRun()) {
-          System.out.println(bestRun.toString());
-          sb.append(bestRun.toString() + "\n");
-        }
-        embed.addField("> Informations MM+ :",
-            "`" + mk.getCurrentMythicRating().getRating() + "` \n `" + sb.toString()
-                + "`",
-            false);
-      } catch (Exception e) {
-        e.printStackTrace();
-        embed.addField("> Informations MM+ :", "Pas de cl\u00E9 RIO", false);
-      }
-
-      try {
-        StringBuilder sb = new StringBuilder();
-        AxonApplication.BnetCtrl.getRaidCompletition("hyjal", "nopti").getLastExpensions()
-            .getInstances().forEach(instance -> {
-              instance.getModes().forEach(mode -> {
-                sb.append(instance.getInstance().getName() + " : " +
-                    mode.getDifficulty().getName() + "(" + mode.getProgress().getCompletedCount() + "/"
-                    + mode.getProgress().getTotalCount() + ") " + mode.getStatus().getName() + "\n");
-              });
-            });
-        embed.addField("> Informations RAID : ", "`" + sb.toString() + "`", false);
-      } catch (Exception e) {
-        e.printStackTrace();
-        embed.addField("> Informations RAID : ", "Pas de Raid effectués", false);
-      }
-
-      embed.addField("> Statue de la présentation de Guilde :",
-          "> <:avertissement:1116643369507115078> Incomplête", false);
-      return embed;
-    } catch (
-
-    CharacterNotFoundException e) {
+      Embeds.getInfos(jda, user).forEach(f -> embed.addField(f));
+    } catch (CharacterNotFoundException e) {
       e.printStackTrace();
       return Embeds.lgeMenuEntretienCallBackError(jda, user, e);
     } catch (Exception e) {
       return Embeds.lgeMenuEntretienCallBackError(jda, user, e);
     }
+    return embed;
   }
 
   private static EmbedBuilder lgeMenuEntretienCallBackError(JDA jda, GuildUser user, Exception e) {
@@ -323,6 +235,116 @@ public class Embeds {
     return embed;
   }
 
+  public static EmbedBuilder lgeMenuEntretienAccept(MessageEmbed emb, String userID) {
+    EmbedBuilder embed = model();
+    embed.setTitle(emb.getTitle());
+    embed.setDescription(emb.getDescription());
+    for (int i = 0; i < emb.getFields().size() - 1; i++) {
+      embed.addField(emb.getFields().get(i).getName(), emb.getFields().get(i).getValue(),
+          emb.getFields().get(i).isInline());
+    }
+    embed.addField(emb.getFields().get(emb.getFields().size()).getName(),
+        "> <:avertissement:1116643369507115078> Effectuée par <#" + userID + ">", false);
+    return embed;
+  }
+
+  public static EmbedBuilder lgeMenuEntretienRefuse(MessageEmbed emb, String userID) {
+    EmbedBuilder embed = model();
+    embed.setTitle(emb.getTitle());
+    embed.setDescription(emb.getDescription());
+    for (int i = 0; i < emb.getFields().size() - 1; i++) {
+      embed.addField(emb.getFields().get(i).getName(), emb.getFields().get(i).getValue(),
+          emb.getFields().get(i).isInline());
+    }
+    embed.addField(emb.getFields().get(emb.getFields().size()).getName(),
+        "> <:avertissement:1116643369507115078> Refusée par <#" + userID + ">", false);
+    return embed;
+  }
+
+  public static EmbedBuilder lgeMenuEntretienRefresh(MessageEmbed emb, String userID) {
+    EmbedBuilder embed = model();
+    embed.setTitle(emb.getTitle());
+    embed.setDescription(emb.getDescription());
+    embed.addField(emb.getFields().get(emb.getFields().size()).getName(),
+        emb.getFields().get(emb.getFields().size()).getValue(), false);
+    return embed;
+  }
+
+  private static ArrayList<Field> getInfos(JDA jda, GuildUser user)
+      throws CharacterNotFoundException {
+    ArrayList<Field> fields = new ArrayList<>();
+    Character character = AxonApplication.UserLgeCtrl
+        .getCharacterMainByDiscordId(Long.valueOf(user.getDiscordID())).getCharacter();
+    User usr = jda.retrieveUserById(user.getDiscordID()).complete();
+    fields.add(new Field(null, null, false));
+    fields.add(new Field("ID Discord :", "" + "`" + user.getDiscordID() + "`", true));
+    fields.add(new Field("Nom discord :", "`" + usr.getName() + "`", true));
+    fields.add(new Field("Date de cr\u00E9ation :",
+        "`" + usr.getTimeCreated().toLocalDate().toString() + "`", true));
+    fields
+        .add(
+            new Field("Pseudo en jeu :",
+                "`" + AxonApplication.UserLgeCtrl.getCharacterByDiscordId(user.getDiscordID())
+                    .get(0).getName() + "`" + " | **Visuel Discord :**" + usr.getAsMention(),
+                false));
+    fields.add(new Field("**Informations G\u00E9n\u00E9rals :**", "**Classe :**" + " " + jda
+        .getEmojisByName(
+            character.getCharacterClass().getName().toLowerCase().replace(" ", "").replace("é", "e")
+                .replace("ï", "i").replace("ê", "e").replace("-", "").replace("\'", ""),
+            true)
+        .get(0).getAsMention() + " " + character.getCharacterClass().getName() + "\n" + "**Rôle :**"
+        + " "
+        + jda.getEmojisByName(character.getPlayableSpecialization().getRole().getName()
+            .replace(" ", "").replace("é", "e").replace("â", "a"), true).get(0).getAsMention()
+        + " " + character.getPlayableSpecialization().getRole().getName() + "\n" + "**Spec :**"
+        + " " + character.getActiveSpec().getName() + "\n" + "**Race :**" + " "
+        + jda.getEmojisByName(character.getRace().getName().replace(" ", ""), true).get(0)
+            .getAsMention()
+        + " " + character.getRace().getName() + "\n" + "**Faction :**" + " "
+        + jda.getEmojisByName(character.getFaction().getName().replace(" ", ""), true).get(0)
+            .getAsMention()
+        + " " + character.getFaction().getName() + "\n" + "**ILVL :**" + " "
+        + character.getEquippedItemLevel() + "\n", false));
+    try {
+      MythicKeystoneProfile mk =
+          AxonApplication.UserLgeCtrl.getCharacterByDiscordId(user.getDiscordID()).get(0)
+              .getCharacter().getMythicKeystoneProfile();
+      StringBuilder sb = new StringBuilder();
+      for (BestRun bestRun : mk.getLastSeason().getBestRun()) {
+        System.out.println(bestRun.toString());
+        sb.append(bestRun.toString() + "\n");
+      }
+      fields.add(new Field("> Informations MM+ :",
+          "`" + mk.getCurrentMythicRating().getRating() + "` \n `" + sb.toString() + "`", false));
+    } catch (Exception e) {
+      e.printStackTrace();
+      fields.add(new Field("> Informations MM+ :", "Pas de cl\u00E9 RIO", false));
+    }
+
+    try {
+      StringBuilder sb = new StringBuilder();
+      // TODO : !!!!
+      AxonApplication.UserLgeCtrl.getCharacterByDiscordId(user.getDiscordID()).get(0).getCharacter()
+          .getMythicRaidProfile().getLastExpensions().getInstances().forEach(instance -> {
+            instance.getModes().forEach(mode -> {
+              sb.append(instance.getInstance().getName() + " : " + mode.getDifficulty().getName()
+                  + "(" + mode.getProgress().getCompletedCount() + "/"
+                  + mode.getProgress().getTotalCount() + ") " + mode.getStatus().getName() + "\n");
+            });
+          });
+      fields.add(new Field("> Informations RAID : ", "`" + sb.toString() + "`", false));
+    } catch (Exception e) {
+      e.printStackTrace();
+      fields.add(new Field("> Informations RAID : ", "Pas de Raid effectués", false));
+    }
+
+    fields.add(new Field("> Statue de la présentation de Guilde :",
+        "> <:avertissement:1116643369507115078> Incomplête", false));
+    return fields;
+  }
+
+  /// INVITE
+
   public static EmbedBuilder lgeMenuInviteGetInfos(ModalInteraction event, Character character) {
     EmbedBuilder embed = Embeds.model();
     embed.setTitle(event.getMember().getEffectiveName()
@@ -336,15 +358,14 @@ public class Embeds {
     embed.addField("> Niveau d'objet :", "" + character.getEquippedItemLevel(), true);
     try {
       embed.addField("> RIO :",
-          "" + character.getMythicKeystoneProfile().getCurrentMythicRating().getRating(),
-          true);
+          "" + character.getMythicKeystoneProfile().getCurrentMythicRating().getRating(), true);
     } catch (MythicKeystoneProfileNotFoundException e) {
       embed.addField("> RIO :", "Pas de cl\u00E9 RIO", true);
     }
     embed.addField("> Armurie :",
         "[Mon Profile](https://worldofwarcraft.blizzard.com/fr-fr/character/eu/"
-            + character.getRealm().getSlug().toLowerCase() + "/"
-            + character.getName().toLowerCase() + ")",
+            + character.getRealm().getSlug().toLowerCase() + "/" + character.getName().toLowerCase()
+            + ")",
         true);
     embed.addField("<:avertissement:1116643369507115078> - Attention",
         "> Il est important de noter que les informations présentent sont dynamiquement mise à jour lors de votre dernière déconexion et peuvent donc changer.",
@@ -361,7 +382,8 @@ public class Embeds {
 
   public static EmbedBuilder lgeMenuInviteGetInfosError(ModalInteraction event) {
     EmbedBuilder embed = Embeds.model();
-    embed.setTitle(event.getMember().getEffectiveName() + ", nous n'avons pas trouver votre personnage.");
+    embed.setTitle(
+        event.getMember().getEffectiveName() + ", nous n'avons pas trouver votre personnage.");
     embed.setDescription(
         "### <:lge_person:1099955042800373772> - Pourquoi ? \n > Afin de faciliter le fonctionnement interne tel que les events et les différentes fonctionnalités, nous devons recueillir vos informations via l'Api de Blizzard.");
     embed.addField("> Nouveau personnage ? ", event.getValue("player_name").getAsString() + "-"
@@ -377,14 +399,14 @@ public class Embeds {
     return embed;
   }
 
-  public static EmbedBuilder massMoovePlayerCommand(SlashCommandInteractionEvent event, String thumbnailName,
-      List<Member> memberList) {
+  public static EmbedBuilder massMoovePlayerCommand(SlashCommandInteractionEvent event,
+      String thumbnailName, List<Member> memberList) {
     EmbedBuilder embed = Embeds.model();
     embed.setTitle("Mass Moove Player");
     embed.setDescription(
         "Vous êtes sur le point de déplacer tous les joueurs de la guilde vers un autre channel vocal.");
-    embed.addField("> Channel actuel :", event.getOption("channel_actual").getAsChannel().getAsMention(),
-        true);
+    embed.addField("> Channel actuel :",
+        event.getOption("channel_actual").getAsChannel().getAsMention(), true);
     embed.addField("> Channel de redirection :",
         event.getOption("channel_redirection").getAsChannel().getAsMention(), true);
     try {
@@ -395,8 +417,7 @@ public class Embeds {
     try {
       StringBuilder str = new StringBuilder();
       memberList.forEach(m -> str.append(m.getAsMention() + ","));
-      embed.addField("> Utilisateurs concernés :",
-          str.toString(), false);
+      embed.addField("> Utilisateurs concernés :", str.toString(), false);
     } catch (Exception e) {
       embed.addField("> Utilisateurs concernés :", "Aucuns", false);
     }
